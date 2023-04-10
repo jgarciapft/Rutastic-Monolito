@@ -1,0 +1,135 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #3498DB;
+}
+
+#wrap {
+    min-height: 100%;
+}
+
+#main {
+    overflow: auto;
+    padding-bottom: 100px;
+}
+
+.rutastic-brand {
+    font-family: 'Fredoka One', cursive;
+}
+
+#descripcion-in {
+    height: 160px;
+}
+
+.blocked-info-pill {
+    font-size: 1.2em;
+}
+
+.card-title, .card-subtitle {
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.card-title {
+    font-size: 1.40625rem;
+}
+
+.card-subtitle {
+    font-size: 0.9375rem;
+}
+
+.route-data {
+    width: 10em;
+}
+
+.white-bg, .route-data-footer, .top-route-item {
+    background-color: white;
+}
+
+.kudo-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.kudo-button-none, .kudo-button-plus:hover, .kudo-button-minus:hover {
+    color: #95A5A6;
+}
+
+.kudo-button-none:hover, .kudo-button-minus {
+    color: #18BC9C;
+}
+
+.kudo-button-minus {
+    color: #2C3E50;
+}
+
+.kudo-button-plus {
+    color: #E74C3C;
+}
+
+.top-routes-container {
+    height: 250px;
+}
+
+.top-route-rank, #related-routes-subtitle {
+    font-size: 2em;
+}
+
+.top-route-card-mini {
+    width: 80%;
+}
+
+.user-rank {
+    width: 45px;
+}
+
+.user-stat {
+    width: 75px;
+}
+
+.trophy-mini {
+    font-size: 0.8em;
+}
+
+.related-routes-container {
+    border: 2px solid rgb(44, 62, 80);
+    border-radius: 5px;
+}
+
+.related-route-card {
+    max-width: 22rem;
+    min-height: 415px;
+}
+
+.related-route-card .card-body .card-title {
+    max-width: 250px;
+}
+
+.btn-related-route {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#show-more-tooltip {
+    font-size: 4em;
+}
+
+.difficulty-fieldset-primary {
+    border: 2px solid #2C3E50;
+}
+
+.difficulty-fieldset-white {
+    border: 2px solid white;
+}
+
+.custom-legend {
+    font-size: 1em;
+}
+
+.difficulty-label {
+    font-size: 0.9em;
+}

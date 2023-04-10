@@ -1,0 +1,201 @@
+<div class="container my-5 py-5">
+    <div class="row d-xl-flex justify-content-xl-center">
+        <div class="col login-clean">
+            <div class="d-flex justify-content-center align-items-center p-5 error-container"
+                 data-ng-show="routeHandlerVM.loggedUser === undefined">
+                <p class="lead text-dark text-center font-weight-bold">
+                    Para {{routeHandlerVM.functions.isCreationForm() ? 'crear una nueva ruta' : 'editar esta ruta'}}
+                    debe 
+                    <a class="font-weight-bold" href="Login.do">iniciar sesión</a>
+                </p>
+            </div>
+            <div class="d-flex justify-content-center align-items-center p-5 error-container"
+                 data-ng-show="routeHandlerVM.loggedUser !== undefined &&
+                                routeHandlerVM.functions.isEditionForm() && routeHandlerVM.loggedUser.id !== routeHandlerVM.route.createdByUser">
+                <p class="lead text-dark text-center font-weight-bold">
+                    No tienes permiso para editar esta ruta. Prueba a
+                    <a class="font-weight-bold" href="Login.do">iniciar sesión</a> con una cuenta diferente
+                </p>
+            </div>
+            <form class="p-5" data-ng-show="routeHandlerVM.loggedUser !== undefined &&
+                        ((routeHandlerVM.functions.isEditionForm() && routeHandlerVM.loggedUser.id === routeHandlerVM.route.createdByUser)
+                        || routeHandlerVM.functions.isCreationForm())"
+                  data-ng-submit="routeHandlerVM.functions.submitRouteForm()"
+                  id="form-crear-ruta"
+                  method="post">
+                <h1 class="text-center mb-5 font-weight-bold">
+                    {{routeHandlerVM.functions.isCreationForm() ? 'Crear' : 'Editar'}} ruta
+                </h1>
+                <div class="alert alert-danger mb-5" data-ng-show="routeHandlerVM.crudErrorMessage.length > 0"
+                     role="alert">
+                    <span class="font-weight-bold">
+                        Error al {{routeHandlerVM.functions.isCreationForm() ? 'crear una nueva' : 'editar la'}} ruta
+                    </span>
+                    <hr>
+                    <p>{{routeHandlerVM.crudErrorMessage}}</p>
+                </div>
+                <div class="form-row mb-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="titulo-in">Título de la ruta</label>
+                            <input class="form-control"
+                                   data-ng-model="routeHandlerVM.route.title"
+                                   id="titulo-in"
+                                   name="titulo"
+                                   required
+                                   type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row mb-2">
+                    <div class="col-6 pr-3">
+                        <div class="form-group">
+                            <label for="descripcion-in">Descripción de la ruta</label>
+                            <textarea class="form-control"
+                                      data-ng-model="routeHandlerVM.route.description"
+                                      id="descripcion-in"
+                                      name="descripcion"
+                                      required></textarea>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="categorias-sel">Categorías&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span class="label-subtitle">Mantén&nbsp;
+                                        <span class="text-monospace">Ctrl</span> para una selección múltiple&nbsp;</span>
+                                <span class="label-subtitle" data-ng-if="routeHandlerVM.functions.isEditionForm()">
+                                    (--> seleccionado)
+                                </span>
+                            </label>
+                            <select class="form-control custom-select"
+                                    data-ng-model="routeHandlerVM.route.categories"
+                                    id="categorias-sel"
+                                    multiple
+                                    name="categorias" required>
+                                <option data-ng-repeat="category in routeHandlerVM.routecategories"
+                                        data-ng-selected="routeHandlerVM.selectedCategoryNames.includes(category.name)"
+                                        data-ng-value="category.name">
+                                    {{routeHandlerVM.selectedCategoryNames.includes(category.name) ? '-->' : ''}}
+                                    {{category.name.toUpperCase()}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row mb-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="distancia-in">Distancia <span class="text-secondary">(m)</span></label>
+                            <input class="form-control"
+                                   data-ng-model="routeHandlerVM.route.distance"
+                                   id="distancia-in"
+                                   min="1"
+                                   name="distancia"
+                                   placeholder="En metros (&gt;0)"
+                                   required
+                                   type="number">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="elevacion-in">Elevación <span class="text-secondary">(m)</span></label>
+                            <input class="form-control"
+                                   data-ng-model="routeHandlerVM.route.elevation"
+                                   id="elevacion-in"
+                                   min="1"
+                                   name="elevacion"
+                                   placeholder="En metros (&gt;0)"
+                                   required
+                                   type="number">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="duracion-in">Duración <span class="text-secondary">(min)</span></label>
+                            <input class="form-control"
+                                   data-ng-model="routeHandlerVM.route.duration"
+                                   id="duracion-in"
+                                   min="1"
+                                   name="duracion"
+                                   placeholder="En minutos (&gt;0)"
+                                   required
+                                   type="number">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row mb-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="dificultad-sel">Dificultad</label>
+                            <select class="form-control custom-select"
+                                    data-ng-model="routeHandlerVM.route.skillLevel"
+                                    id="dificultad-sel"
+                                    name="dificultad"
+                                    required>
+                                <option data-ng-selected="routeHandlerVM.route.skillLevel === 'facil'" value="facil">
+                                    Fácil
+                                </option>
+                                <option data-ng-selected="routeHandlerVM.route.skillLevel === 'media'" value="media">
+                                    Media
+                                </option>
+                                <option data-ng-selected="routeHandlerVM.route.skillLevel === 'dificil'"
+                                        value="dificil">
+                                    Difícil
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row justify-content-end">
+                    <div class="col-2">
+                        <button class="btn btn-primary btn-block mt-5 font-weight-bold" type="submit">
+                            {{routeHandlerVM.functions.isCreationForm() ? 'CREAR' : 'EDITAR'}} RUTA
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="w-100"></div>
+    <div class="row" data-ng-if="routeHandlerVM.functions.isEditionForm()">
+        <div class="col login-clean">
+            <div class="alert alert-danger mb-5 mx-5" data-ng-if="routeHandlerVM.deletionErrorMessage.length > 0"
+                 role="alert">
+                <span class="font-weight-bold">Error al eliminar la ruta</span>
+                <hr>
+                <p>{{routeHandlerVM.deletionErrorMessage}}</p>
+            </div>
+            <form class="px-5 pb-5 pt-2 needs-validation" data-ng-show="routeHandlerVM.loggedUser !== undefined &&
+                        routeHandlerVM.loggedUser.id === routeHandlerVM.route.createdByUser"
+                  data-ng-submit="routeHandlerVM.functions.submitDeletionForm()"
+                  id="form-eliminar-ruta"
+                  method="post">
+                <div class="form-row justify-content-center">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <button class="btn btn-danger btn-block font-weight-bold" type="submit">
+                                ELIMINAR RUTA
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-4">
+                        <div class="d-flex justify-content-xl-center custom-control custom-checkbox"
+                             id="aviso-div">
+                            <input class="custom-control-input"
+                                   id="aceptar-aviso-chkbx"
+                                   name="aceptar-aviso"
+                                   required
+                                   type="checkbox">
+                            <label class="text-center custom-control-label"
+                                   for="aceptar-aviso-chkbx">Entiendo que esta
+                                acción es permanente y que no hay forma de recuperar la ruta una vez haya
+                                sido
+                                eliminada</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

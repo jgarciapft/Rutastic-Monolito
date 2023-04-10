@@ -1,0 +1,20 @@
+.highlight-blue {
+    color: #fff;
+}
+
+.highlight-blue p, .highlight-blue h2 {
+    line-height: 1.5;
+}
+
+.highlight-blue p {
+    color: #c4d5ef;
+}
+
+.highlight-blue h2 {
+    margin-bottom: 25px;
+}
+
+.highlight-blue .intro {
+    font-size: 16px;
+    max-width: 500px;
+}

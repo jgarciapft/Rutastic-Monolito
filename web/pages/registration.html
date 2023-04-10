@@ -1,0 +1,58 @@
+<div class="container my-5 py-4">
+    <div class="row d-xl-flex justify-content-xl-center">
+        <div class="col-5 login-clean">
+            <form data-ng-submit="registrationVM.functions.submitRegistrationForm()" id="registro-form" method="post">
+                <h1 class="text-center px-5 pt-5">Crear cuenta en</h1>
+                <h1 class="text-center"><span class="rutastic-brand">Rutastic</span></h1>
+                <div class="d-xl-flex justify-content-xl-center my-5">
+                    <img alt="Rutastic logo" src="img/Rutastic-logo-150px.png">
+                </div>
+                <div class="alert alert-danger mb-5 mx-5" data-ng-if="registrationVM.errorMessage.length > 0"
+                     role="alert">
+                    <span class="font-weight-bold">Error al registrar un nuevo usuario</span>
+                    <hr>
+                    <p>{{registrationVM.errorMessage}}</p>
+                </div>
+                <div class="form-group px-5 mb-n1">
+                    <input aria-label="Correo electrónico"
+                           class="form-control"
+                           data-ng-model="registrationVM.user.email"
+                           id="email-in"
+                           name="email"
+                           placeholder="Correo electrónico"
+                           required
+                           type="email">
+                </div>
+                <div class="form-group px-5 mb-n1 mt-1">
+                    <input aria-label="Nombre de usuario"
+                           class="form-control"
+                           data-ng-model="registrationVM.user.username"
+                           id="usuario-in"
+                           name="usuario"
+                           placeholder="Nombre de usuario"
+                           required
+                           type="text">
+                </div>
+                <div class="form-group px-5 mt-1">
+                    <input aria-label="Contraseña"
+                           class="form-control"
+                           data-ng-model="registrationVM.user.password"
+                           id="password-in"
+                           name="password"
+                           placeholder="Contraseña"
+                           required
+                           type="password">
+                </div>
+                <div class="form-group px-5">
+                    <button class="btn btn-primary btn-block font-weight-bold" type="submit">REGISTRARSE
+                    </button>
+                </div>
+                <p class="text-center py-5">¿Ya tienes una cuenta?
+                    <a class="font-weight-bold" href="Login.do">
+                        Inicia sesión
+                    </a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>

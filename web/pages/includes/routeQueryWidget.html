@@ -1,0 +1,158 @@
+<form data-ng-controller="routeQueryWidgetController as routeQueryWidgetVM"
+      data-ng-submit="routeQueryWidgetVM.functions.submitQuery()" id="widget-filtrar-rutas"
+      method="get">
+    <div class="form-row justify-content-between mb-3">
+        <div class="col-11">
+            <input aria-label="término o frase que aparezca en el título o descripción de una ruta"
+                   class="form-control d-inline"
+                   data-ng-model="routeQueryWidgetVM.routeQuery.buscarTexto"
+                   id="consulta-rutas-schbar"
+                   name="buscar-texto"
+                   placeholder="Introduzca una frase que aparezca en el título o descripción de una ruta, o una lista de términos separada por ';'"
+                   type="text">
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+        </div>
+    </div>
+    <div class="form-row justify-content-between align-items-center mb-3">
+        <div class="col-auto form-inline">
+            <div class="form-group mr-5">
+                <label class="font-weight-bold" for="ordenar-por-kudos-sel">Ordenar por kudos</label>
+                <select class="form-control custom-select" data-ng-model="routeQueryWidgetVM.routeQuery.ordenarPorKudos"
+                        id="ordenar-por-kudos-sel"
+                        name="ordenar-por-kudos">
+                    <option value="no-ordenar">No ordenar</option>
+                    <option value="ascendentes">Ascendentes</option>
+                    <option value="descendentes">Descendentes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-bold" for="kudos-minimos-in">Kudos mínimos</label>
+                <input class="form-control"
+                       data-ng-model="routeQueryWidgetVM.routeQuery.kudosMinimos"
+                       id="kudos-minimos-in"
+                       name="kudos-minimos"
+                       placeholder="Incluido este número"
+                       type="number">
+            </div>
+        </div>
+        <div class="col-auto">
+            <div class="form-group my-1">
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input"
+                           data-ng-model="routeQueryWidgetVM.routeQuery.ocultarRutasBloq"
+                           id="ocultar-rutas-bloq-chkbx"
+                           name="ocultar-rutas-bloq"
+                           type="checkbox">
+                    <label class="custom-control-label font-weight-bolder"
+                           for="ocultar-rutas-bloq-chkbx">Ocultar rutas bloqueadas</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-auto" data-ng-show="routeQueryWidgetVM.loggedUser !== undefined">
+            <div class="form-group my-1">
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input"
+                           data-ng-model="routeQueryWidgetVM.routeQuery.mostrarMisrutas"
+                           id="mostrar-misrutas-chkbx"
+                           name="mostrar-misrutas"
+                           type="checkbox">
+                    <label class="custom-control-label font-weight-bolder"
+                           for="mostrar-misrutas-chkbx">Mostrar solo mis rutas</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row" data-ng-show="!routeQueryWidgetVM.functions.testPath('/')">
+        <div class="col">
+            <p class="text-muted mb-n2">Filtro avanzado</p>
+            <hr/>
+        </div>
+    </div>
+    <div class="form-row justify-content-between align-items-center">
+        <div class="col-auto">
+            <fieldset class="d-inline p-2 rounded"
+                      data-ng-class="{'difficulty-fieldset-white' : routeQueryWidgetVM.functions.testPath('/'), 'difficulty-fieldset-primary' : !routeQueryWidgetVM.functions.testPath('/')}">
+                <legend class="font-weight-bold w-auto px-2 custom-legend">Dificultad</legend>
+                <div class="px-2 pb-2">
+                    <div class="custom-control custom-radio d-inline mr-2">
+                        <input type="radio"
+                               id="skill-level-none-chkbx"
+                               class="custom-control-input"
+                               data-ng-model="routeQueryWidgetVM.routeQuery.filtroDificultad"
+                               name="filtro-dificultad"
+                               value="0"/>
+                        <label class="custom-control-label difficulty-label font-weight-bold"
+                               for="skill-level-none-chkbx">Cualquiera</label>
+                    </div>
+                    <div class="custom-control custom-radio d-inline mr-2">
+                        <input type="radio"
+                               id="skill-level-easy-chkbx"
+                               class="custom-control-input"
+                               data-ng-model="routeQueryWidgetVM.routeQuery.filtroDificultad"
+                               name="filtro-dificultad"
+                               value="1"/>
+                        <label class="custom-control-label difficulty-label font-weight-bold"
+                               for="skill-level-easy-chkbx">Fácil</label>
+                    </div>
+                    <div class="custom-control custom-radio d-inline mr-2">
+                        <input type="radio"
+                               id="skill-level-medium-chkbx"
+                               class="custom-control-input"
+                               data-ng-model="routeQueryWidgetVM.routeQuery.filtroDificultad"
+                               name="filtro-dificultad"
+                               value="2"/>
+                        <label class="custom-control-label difficulty-label font-weight-bold"
+                               for="skill-level-medium-chkbx">Media</label>
+                    </div>
+                    <div class="custom-control custom-radio d-inline">
+                        <input type="radio"
+                               id="skill-level-hard-chkbx"
+                               class="custom-control-input"
+                               data-ng-model="routeQueryWidgetVM.routeQuery.filtroDificultad"
+                               name="filtro-dificultad"
+                               value="3"/>
+                        <label class="custom-control-label difficulty-label font-weight-bold"
+                               for="skill-level-hard-chkbx">Difícil</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-2">
+            <label class="d-block font-weight-bold text-center" for="filtrar-usuario-sel">Filtrar por autor</label>
+            <select class="custom-select" id="filtrar-usuario-sel" name="filtrar-usuario"
+                    data-ng-model="routeQueryWidgetVM.routeQuery.filtrarUsuario">
+                <option value="">Selecciona usuario</option>
+                <option data-ng-repeat="user in routeQueryWidgetVM.allUsernames" data-ng-value="user.username">
+                    {{user.username}}
+                </option>
+            </select>
+        </div>
+        <div class="col-5">
+            <div class="d-flex align-items-center">
+                <span class="text-nowrap font-weight-bold text-center my-auto mr-2">Rango de distancia</span>
+                <div class="input-group">
+                    <input type="number" class="form-control"
+                           placeholder="De" name="distancia-minima" min="1"
+                           data-ng-model="routeQueryWidgetVM.routeQuery.distanciaMinima"
+                           aria-label="Distancia mínima"/>
+                    <div class="input-group-append">
+                        <span class="input-group-text">m</span>
+                    </div>
+                </div>
+                <i data-ng-class="{'text-white' : routeQueryWidgetVM.functions.testPath('/'), 'text-secondary' : !routeQueryWidgetVM.functions.testPath('/')}"
+                   class="fa fa-minus mx-2"></i>
+                <div class="input-group">
+                    <input type="number" class="form-control d-inline" placeholder="A"
+                           name="distancia-maxima" min="1"
+                           data-ng-model="routeQueryWidgetVM.routeQuery.distanciaMaxima"
+                           aria-label="Distancia máxima"/>
+                    <div class="input-group-append">
+                        <span class="input-group-text">m</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

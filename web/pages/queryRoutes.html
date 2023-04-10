@@ -1,0 +1,190 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col">
+            <ng-include src="'pages/includes/routeQueryWidget.html'"></ng-include>
+        </div>
+    </div>
+</div>
+<div class="container-fluid px-5">
+    <div class="row mb-3">
+        <div class="col-3">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <h1 class="text-center card-title font-weight-bold">TOP 5 USUARIOS</h1>
+                </div>
+                <p class="lead text-center text-primary">Más rutas en el top mensual</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item list-group-item-dark"
+                        data-ng-repeat="topUser in routeQueryVM.factories.routeQuery.topUsersByTopRoutes">
+                        <div class="d-flex justify-content-around">
+                            <div class="d-flex justify-content-center user-rank mr-3"
+                                 data-ng-switch="$index">
+                                <i class="fas fa-trophy trophy-mini my-auto" data-ng-switch-when="0"></i>
+                                <i class="fas fa-trophy my-auto" data-ng-switch-when="0"></i>
+                                <i class="fas fa-trophy my-auto trophy-mini" data-ng-switch-when="0"></i>
+                                <i class="fas fa-medal my-auto" data-ng-switch-when="1"></i>
+                                <i class="fas fa-medal my-auto" data-ng-switch-when="1"></i>
+                                <i class="fas fa-medal my-auto" data-ng-switch-when="2"></i>
+                                <p class="font-weight-bold my-auto" data-ng-switch-default>{{$index + 1}}º</p>
+                            </div>
+                            <p class="font-weight-bold text-truncate my-auto">{{topUser.username}}</p>
+                            <p class="text-info my-auto ml-3 user-stat">
+                                <span class="font-weight-bold">{{topUser.stat | number : 0}}</span> top rutas
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+                <p class="lead text-center text-primary my-3">Mayor media de kudos / ruta</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item list-group-item-dark"
+                        data-ng-repeat="topUser in routeQueryVM.factories.routeQuery.topUsersByAvgKudos">
+                        <div class="d-flex justify-content-around">
+                            <div class="d-flex justify-content-center user-rank mr-3"
+                                 data-ng-switch="$index">
+                                <i class="fas fa-trophy trophy-mini my-auto" data-ng-switch-when="0"></i>
+                                <i class="fas fa-trophy my-auto" data-ng-switch-when="0"></i>
+                                <i class="fas fa-trophy my-auto trophy-mini" data-ng-switch-when="0"></i>
+                                <i class="fas fa-medal my-auto" data-ng-switch-when="1"></i>
+                                <i class="fas fa-medal my-auto" data-ng-switch-when="1"></i>
+                                <i class="fas fa-medal my-auto" data-ng-switch-when="2"></i>
+                                <p class="font-weight-bold my-auto" data-ng-switch-default>{{$index + 1}}º</p>
+                            </div>
+                            <p class="font-weight-bold text-truncate my-auto">{{topUser.username}}</p>
+                            <p class="text-info text-right my-auto ml-3 user-stat">
+                                <span class="font-weight-bold">{{topUser.stat | number : 2}}</span> kd/r
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-6">
+            <p class="col-8 offset-2 lead text-center text-secondary mt-5"
+               data-ng-if="routeQueryVM.factories.routeQuery.filteredRoutes.length === 0">
+                Vaya! Parece que ninguna ruta cumple con los criterios de búsqueda que nos has pedido. Prueba con otro
+                filtro
+            </p>
+            <div class="card mb-5"
+                 data-ng-repeat="route in routeQueryVM.factories.routeQuery.filteredRoutes"
+                 data-ng-class="{'text-black-50 bg-light border-light': route.blocked}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h1 class="d-inline card-title font-weight-bold">{{route.title}}</h1>
+                        <div class="d-inline" data-ng-if="route.blocked">
+                            <span class="badge badge-pill badge-secondary">
+                                Ruta bloqueada<i class="fa fa-lock ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <h2 class="text-muted card-subtitle mb-4">Fecha de creación&nbsp;
+                        <span class="font-italic">{{route.creationDate}}</span>
+                    </h2>
+                    <p class="card-text text-justify">{{route.description}}</p>
+                    <div class="d-flex justify-content-between my-4">
+                        <div class="card text-center d-inline route-data">
+                            <i class="fa fa-clock-o py-2"></i><span class="text-info p-2">Duración</span>
+                            <div class="route-data-footer card-footer text-muted text-wrap text-break">
+                                <span class="lead">{{route.duration | minutesFormat}}</span> {{route.duration |
+                                minutesFormatString}}
+                            </div>
+                        </div>
+                        <div class="card text-center d-inline route-data">
+                            <i class="fa fa-flag py-2"></i><span class="text-info p-2">Distancia</span>
+                            <div class="route-data-footer card-footer text-muted text-wrap text-break">
+                                <span class="lead">{{route.distance | distanceFormat}}</span> {{route.distance |
+                                distanceFormatString}}
+                            </div>
+                        </div>
+                        <div class="card text-center d-inline route-data">
+                            <i class="fas fa-mountain py-2"></i><span class="text-info p-2">Elevación</span>
+                            <div class="route-data-footer card-footer text-muted text-wrap text-break">
+                                <span class="lead">{{route.elevation | distanceFormat}}</span> {{route.elevation |
+                                distanceFormatString}}
+                            </div>
+                        </div>
+                        <div class="card text-center d-inline route-data">
+                            <i class="fas fa-walking py-2"></i><span class="text-info p-2">Categorías</span>
+                            <div class="route-data-footer card-footer lead text-muted text-wrap text-break">
+                                {{route.categories}}
+                            </div>
+                        </div>
+                        <div class="card text-center d-inline route-data">
+                            <i class="la la-signal py-2"></i><span class="text-info p-2">Dificultad</span>
+                            <div class="route-data-footer card-footer lead text-muted text-wrap text-break">
+                                {{route.skillLevel.toUpperCase()}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <div>
+                            <p class="d-inline font-weight-bold">{{route.kudos}}&nbsp;kudos</p>
+                            <button class="kudo-button" data-ng-class="{'kudo-button-none': routeQueryVM.factories.routeQuery.kudoEntriesModMap[route.id] === undefined || routeQueryVM.factories.routeQuery.kudoEntriesModMap[route.id] === -1,
+                                        'kudo-button-plus' : routeQueryVM.factories.routeQuery.kudoEntriesModMap[route.id] === 1}"
+                                    data-ng-click="routeQueryVM.functions.updateKudoRating(route.id, 1)"
+                                    data-ng-show="routeQueryVM.loggedUser"
+                                    type="submit">
+                                <i class="fas fa-arrow-circle-up"></i>
+                            </button>
+                            <button class="kudo-button" data-ng-class="{'kudo-button-none': routeQueryVM.factories.routeQuery.kudoEntriesModMap[route.id] === undefined || routeQueryVM.factories.routeQuery.kudoEntriesModMap[route.id] === 1,
+                                        'kudo-button-minus' : routeQueryVM.factories.routeQuery.kudoEntriesModMap[route.id] === -1}"
+                                    data-ng-click="routeQueryVM.functions.updateKudoRating(route.id, -1)"
+                                    data-ng-show="routeQueryVM.loggedUser"
+                                    type="submit">
+                                <i class="fas fa-arrow-circle-down"></i>
+                            </button>
+                        </div>
+                        <a class="btn btn-primary justify-content-xl-end text-light"
+                           data-ng-href="#!/rutas/DetallesRuta/{{route.id}}"
+                           role="button">
+                            Ver detalles
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card border-secondary top-routes-container mb-5 pb-3">
+                <div class="card-body">
+                    <h1 class="text-center text-dark card-title font-weight-bold">Top 5 Rutas semanal</h1>
+                </div>
+                <div class="align-items-start overflow-auto h-100 mx-3">
+                    <div class="text-primary d-flex justify-content-around align-items-center p-2 mb-2"
+                         data-ng-repeat="topRoute in routeQueryVM.factories.routeQuery.topWeeklyRoutes">
+                        <div>
+                            <p class="lead text-dark top-route-rank font-weight-bolder d-inline">{{$index + 1}}</p>
+                        </div>
+                        <div class="top-route-card-mini">
+                            <a class="btn btn-info btn-sm text-white float-right"
+                               data-ng-href="#!/rutas/DetallesRuta/{{topRoute.id}}" role="button">Ver</a>
+                            <h2 class="text-truncate card-title">{{topRoute.title}}</h2>
+                            <p class="d-inline font-weight-bold">{{topRoute.kudos}}</p>
+                            <p class="d-inline font-weight-bold"> kudos esta semana</p>
+                            <span class="font-italic float-right">{{topRoute.creationDate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card text-white bg-success border-success top-routes-container pb-3">
+                <div class="card-body">
+                    <h1 class="text-center card-title font-weight-bold">Top 5 Rutas mensual</h1>
+                </div>
+                <div class="align-items-start overflow-auto h-100 mx-3">
+                    <div class="top-route-item rounded text-primary d-flex justify-content-around align-items-center p-2 mb-2"
+                         data-ng-repeat="topRoute in routeQueryVM.factories.routeQuery.topMonthlyRoutes">
+                        <div>
+                            <p class="lead text-dark top-route-rank font-weight-bolder d-inline">{{$index + 1}}</p>
+                        </div>
+                        <div class="top-route-card-mini">
+                            <a class="btn btn-info btn-sm text-white float-right"
+                               data-ng-href="#!/rutas/DetallesRuta/{{topRoute.id}}" role="button">Ver</a>
+                            <h2 class="text-truncate card-title">{{topRoute.title}}</h2>
+                            <p class="d-inline font-weight-bold">{{topRoute.kudos}}</p>
+                            <p class="d-inline font-weight-bold"> kudos este mes</p>
+                            <span class="font-italic float-right">{{topRoute.creationDate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

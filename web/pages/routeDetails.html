@@ -1,0 +1,185 @@
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col">
+            <div class="card border-0"
+                 data-ng-class="{'text-black-50 bg-light border-light': routeDetailsVM.route.blocked}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h1 class="d-inline card-title font-weight-bold">{{routeDetailsVM.route.title}}</h1>
+                        <div class="d-inline"
+                             data-ng-show="routeDetailsVM.route.blocked && (routeDetailsVM.loggedUser == undefined || routeDetailsVM.loggedUser.id != routeDetailsVM.route.createdByUser)">
+                                <span class="badge badge-secondary blocked-info-pill py-2 px-3">
+                                    La ruta ha sido bloqueada por su autor<i class="fa fa-lock ml-2"></i>
+                                </span>
+                        </div>
+                        <div data-ng-show="routeDetailsVM.loggedUser !== undefined
+                            && routeDetailsVM.loggedUser.id === routeDetailsVM.route.createdByUser">
+                            <a class="btn btn-secondary btn-sm justify-content-end mx-2 font-weight-bold"
+                               data-ng-href="#!/rutas/EditarRuta/{{routeDetailsVM.route.id}}"
+                               role="button">
+                                Editar ruta
+                            </a>
+                            <div class="d-inline">
+                                <button class="btn btn-primary btn-sm font-weight-bold"
+                                        data-ng-click="routeDetailsVM.functions.toggleRouteBlockedState()"
+                                        type="button">
+                                    <i class="fa fa-lock mr-2"></i>
+                                    {{routeDetailsVM.route.blocked ? 'Desbloquear' : 'Bloquear'}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="text-muted card-subtitle mb-4">Fecha de creación&nbsp;
+                        <span class="font-italic">{{routeDetailsVM.route.creationDate}}</span>
+                    </h2>
+                    <p class="card-text text-justify">{{routeDetailsVM.route.description}}</p>
+                    <div class="d-flex justify-content-between my-4">
+                        <div class="card text-center d-inline route-data">
+                            <i class="fa fa-clock-o p-2"></i><span class="text-info p-2">Duración</span>
+                            <div class="route-data-footer card-footer text-muted text-wrap text-break">
+                                <span class="lead">{{routeDetailsVM.route.duration | minutesFormat}}</span>
+                                {{routeDetailsVM.route.duration | minutesFormatString}}
+                            </div>
+                        </div>
+                        <div class="card text-center d-inline route-data">
+                            <i class="fa fa-flag p-2"></i><span class="text-info p-2">Distancia</span>
+                            <div class="route-data-footer card-footer text-muted text-wrap text-break">
+                                <span class="lead">{{routeDetailsVM.route.distance | distanceFormat}}</span>
+                                {{routeDetailsVM.route.distance | distanceFormatString}}
+                            </div>
+                        </div>
+                        <div class="card text-center d-inline route-data">
+                            <i class="fas fa-mountain p-2"></i><span class="text-info p-2">Elevación</span>
+                            <div class="route-data-footer card-footer text-muted text-wrap text-break">
+                                <span class="lead">{{routeDetailsVM.route.elevation | distanceFormat }}</span>
+                                {{routeDetailsVM.route.elevation | distanceFormatString}}
+                            </div>
+                        </div>
+                        <div class="card text-center d-inline route-data">
+                            <i class="fas fa-walking p-2"></i><span class="text-info p-2">Categorías</span>
+                            <div class="route-data-footer card-footer lead text-muted text-wrap text-break">
+                                {{routeDetailsVM.route.categories}}
+                            </div>
+                        </div>
+                        <div class="card text-center d-inline route-data">
+                            <i class="la la-signal p-2"></i><span class="text-info p-2">Dificultad</span>
+                            <div class="route-data-footer card-footer lead text-muted text-wrap text-break">
+                                {{routeDetailsVM.route.skillLevel.toUpperCase()}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <div>
+                            <p class="d-inline font-weight-bold">{{routeDetailsVM.route.kudos}}&nbsp;kudos</p>
+                            <button class="kudo-button" data-ng-class="{'kudo-button-none': routeDetailsVM.kudoEntry === undefined || routeDetailsVM.kudoEntry.modifier === -1,
+                                        'kudo-button-plus' : routeDetailsVM.kudoEntry.modifier === 1}"
+                                    data-ng-click="routeDetailsVM.functions.updateKudoRating(1)"
+                                    data-ng-show="routeDetailsVM.loggedUser !== undefined"
+                                    type="submit">
+                                <i class="fas fa-arrow-circle-up"></i>
+                            </button>
+                            <button class="kudo-button" data-ng-class="{'kudo-button-none': routeDetailsVM.kudoEntry === undefined || routeDetailsVM.kudoEntry.modifier === 1,
+                                        'kudo-button-minus' : routeDetailsVM.kudoEntry.modifier === -1}"
+                                    data-ng-click="routeDetailsVM.functions.updateKudoRating(-1)"
+                                    data-ng-show="routeDetailsVM.loggedUser !== undefined"
+                                    type="submit">
+                                <i class="fas fa-arrow-circle-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-end mt-5">
+        <div class="col-2">
+            <a class="btn btn-info btn-block text-white font-weight-bold" href="#!/rutas/FiltrarRutas">Volver</a>
+        </div>
+    </div>
+    <div class="col d-flex align-items-center text-primary"><i class="fas fa-long-arrow-alt-down"
+                                                               id="show-more-tooltip"></i>
+        <p class="lead d-inline font-weight-bolder my-auto ml-3">Ver más</p>
+    </div>
+    <div class="row my-5">
+        <div class="col">
+            <h1>Porque has mostrado interés en esta ruta ...</h1>
+            <p class="text-right" id="related-routes-subtitle">tal vez te interese echar un vistazo a otras
+                similares<br/></p>
+        </div>
+    </div>
+    <div class="row my-5">
+        <div class="col d-flex justify-content-center py-3">
+            <p class="lead text-primary d-inline text-center my-auto">
+                Rutas {{routeDetailsVM.currentSimilarity == 1 ? 'de similar' : routeDetailsVM.currentSimilarity == 2 ?
+                'de la misma' : 'que incluyen las mismas'}}
+            </p>
+            <form class="form-inline d-inline ml-2">
+                <select aria-label="Elegir rutas similares" class="custom-select font-weight-bold text-primary"
+                        data-ng-change="routeDetailsVM.functions.changeCurrentRelatedRoutesCollection()"
+                        data-ng-model="routeDetailsVM.currentSimilarity"
+                        id="related-routes-select">
+                    <option selected value="1">distancia</option>
+                    <option value="2">dificultad</option>
+                    <option value="3">categorías</option>
+                </select>
+            </form>
+        </div>
+    </div>
+    <div class="row row-cols-3 related-routes-container justify-content-center py-5 px-2">
+        <div class="col d-flex align-content-center justify-content-center"
+             data-ng-if="routeDetailsVM.currentRelatedRoutesCollection.length == 0">
+            <p class="font-weight-bold text-secondary my-auto">No hay rutas similares</p>
+        </div>
+        <div class="col" data-ng-repeat="route in routeDetailsVM.currentRelatedRoutesCollection">
+            <div class="card related-route-card" data-ng-class="{'text-dark bg-light' : route.blocked}">
+                <div class="d-flex justify-content-end pt-3 px-3" data-ng-show="route.blocked">
+                    <span class="badge badge-pill badge-secondary">Ruta bloqueada<i class="fa fa-lock ml-1"></i></span>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title text-wrap">{{route.title}}</h1>
+                    <p class="card-text font-italic">{{route.creationDate}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between px-4"
+                        data-ng-class="{'list-group-item-secondary' : route.blocked}">
+                        <div class="text-center my-auto mr-3">
+                            <i class="fa fa-flag mr-1"></i>
+                            <p class="text-info d-inline">Distancia</p>
+                        </div>
+                        <p class="d-inline-block text-dark text-center text-truncate text-wrap my-auto">
+                            <span class="font-weight-bold">{{route.distance | distanceFormat}}</span> {{route.distance |
+                            distanceFormatString}}
+                        </p>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-4"
+                        data-ng-class="{'list-group-item-secondary' : route.blocked}">
+                        <div class="text-center my-auto mr-3">
+                            <i class="fas fa-walking mr-2"></i>
+                            <p class="text-info d-inline">Cateorías</p>
+                        </div>
+                        <p class="d-inline-block text-dark text-center text-truncate text-wrap my-auto">
+                            {{route.categories}}</p>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-4"
+                        data-ng-class="{'list-group-item-secondary' : route.blocked}">
+                        <div class="text-center my-auto mr-3"><i class="la la-signal mr-1"></i>
+                            <p class="text-info d-inline">Dificultad</p>
+                        </div>
+                        <p class="d-inline-block text-dark text-center text-truncate text-wrap font-weight-bold my-auto">
+                            {{route.skillLevel.toUpperCase()}}
+                        </p>
+                    </li>
+                    <li class="list-group-item font-weight-bold text-center"
+                        data-ng-class="{'list-group-item-secondary' : route.blocked}">
+                        {{route.kudos}} kudos
+                    </li>
+                </ul>
+                <a class="btn btn-block btn-related-route text-white font-weight-bold"
+                   data-ng-class="{'btn-info' : !route.blocked, 'btn-primary' : route.blocked}"
+                   data-ng-href="#!/rutas/DetallesRuta/{{route.id}}">
+                    Ver ruta
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

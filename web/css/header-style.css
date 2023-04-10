@@ -1,0 +1,34 @@
+.navbar {
+    background-color: rgb(24, 188, 156);
+}
+
+.navbar-brand {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.5em;
+}
+
+.dropdown-toggle {
+    min-width: 150px;
+    max-width: 300px;
+}
+
+.dropdown-menu {
+    background-color: #2C3E50;
+}
+
+.dropdown-item {
+    color: white;
+}
+
+.dropdown-item:hover {
+    color: #7B8A8B;
+}
+
+#login-button {
+    color: #2C3E50;
+}
+
+#login-button:hover, #create-route-button:hover {
+    background-color: rgb(161, 236, 221);
+    border-color: rgb(161, 236, 221);
+}
