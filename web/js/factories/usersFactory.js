@@ -1,8 +1,8 @@
 angular.module('Rutastic')
     // Services related to users resource
-    .factory('usersFactory', ['$http', function ($http) {
+    .factory('usersFactory', ['$http', '$location', function ($http, $location) {
 
-        let restBaseUrl = 'https://localhost:8443/Rutastic/rest/usuarios';
+        let restBaseUrl = `https://${$location.host()}:${$location.port()}/Rutastic/rest/usuarios`
 
         // FACTORY PROPERTIES
 

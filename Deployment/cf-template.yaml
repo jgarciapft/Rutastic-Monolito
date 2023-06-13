@@ -1,0 +1,116 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  SSHSourceCIDR:
+    Type: String
+  VMInstanceType:
+    Type: String
+  DockerImage:
+    Type: String
+Resources:
+  PublicVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 172.31.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: rutastic-monolito-infra
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PublicVPC
+      AvailabilityZone: !Sub ${AWS::Region}a
+      CidrBlock: 172.31.2.0/24
+      MapPublicIpOnLaunch: true
+
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref PublicVPC
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref PublicVPC
+      InternetGatewayId: !Ref InternetGateway
+
+  InternetRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref RouteTable
+
+  RouteTableAssociationToSubnet:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref RouteTable
+      SubnetId: !Ref PublicSubnet
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: rutastic-monolito-ec2vm-sg
+      GroupDescription: Security group for EC2 VM
+      VpcId: !Ref PublicVPC
+      SecurityGroupIngress:
+        - CidrIp: !Ref SSHSourceCIDR
+          IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
+
+  VirtualMachine:
+    Type: AWS::EC2::Instance
+    Properties:
+      Tags:
+        - Key: Name
+          Value: rutastic-monolito-ec2vm
+      ImageId: ami-04a0ae173da5807d3
+      InstanceType: !Ref VMInstanceType
+      KeyName: vockey
+      AvailabilityZone: !Sub ${AWS::Region}a
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeleteOnTermination: true
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref SecurityGroup
+          SubnetId: !Ref PublicSubnet
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            DeleteOnTermination: true
+            VolumeType: gp2
+            VolumeSize: 10
+      InstanceInitiatedShutdownBehavior: stop
+      DisableApiTermination: false
+      Monitoring: false
+      CreditSpecification:
+        CPUCredits: standard
+      Tenancy: default
+      UserData:
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash -xe
+            yum -y update
+            yum -y install docker.x86_64
+            usermod -aG docker ec2-user
+            systemctl start docker.service
+            docker run -d -p 443:8443/tcp --name rutastic-monolito ${DockerImage}
+Outputs:
+  VirtualMachinePublicDnsName:
+    Value: !GetAtt VirtualMachine.PublicDnsName
+  WebsiteURL:
+    Value: !Sub https://${VirtualMachine.PublicDnsName}/Rutastic/

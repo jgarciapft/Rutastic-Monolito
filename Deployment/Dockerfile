@@ -5,16 +5,16 @@ ENV HOME /root
 ENV CATALINA_HOME /usr/local/tomcat
 
 WORKDIR $HOME/sqliteDB
-COPY JPGPP.db .
+COPY assets/JPGPP.db .
 
 WORKDIR $HOME
-COPY .keystore .
+COPY assets/.keystore .
 
 WORKDIR $CATALINA_HOME/conf
-COPY server.xml .
+COPY assets/server.xml .
 
 WORKDIR $CATALINA_HOME/webapps
-COPY Rutastic-Monolito_war.war .
+COPY assets/Rutastic-Monolito_war.war .
 RUN mv Rutastic-Monolito_war.war Rutastic.war
 
 EXPOSE 8443/tcp

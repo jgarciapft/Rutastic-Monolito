@@ -1,7 +1,7 @@
 angular.module('Rutastic')
-    .factory('routeCategoriesFactory', ['$http', function ($http) {
+    .factory('routeCategoriesFactory', ['$http', '$location', function ($http, $location) {
 
-        let restBaseUrl = 'https://localhost:8443/Rutastic/rest/categoriasruta';
+        let restBaseUrl = `https://${$location.host()}:${$location.port()}/Rutastic/rest/categoriasruta`;
 
         return {
             /**

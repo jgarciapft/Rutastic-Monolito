@@ -1,9 +1,9 @@
 angular.module('Rutastic')
     .factory('routeQueryFactory',
-        ['$http', '$httpParamSerializer', 'kudoEntriesFactory', 'usersFactory', 'routesFactory',
-            function ($http, $httpParamSerializer, kudoEntriesFactory, usersFactory, routesFactory) {
+        ['$http', '$httpParamSerializer', '$location', 'kudoEntriesFactory', 'usersFactory', 'routesFactory',
+            function ($http, $httpParamSerializer, $location, kudoEntriesFactory, usersFactory, routesFactory) {
 
-                let restUrl = 'https://localhost:8443/Rutastic/rest/rutas/filtro'
+                let restUrl = `https://${$location.host()}:${$location.port()}/Rutastic/rest/rutas/filtro`;
 
                 // FACTORY PROPERTIES
 

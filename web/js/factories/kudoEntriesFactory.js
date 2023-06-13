@@ -1,7 +1,7 @@
 angular.module('Rutastic')
-    .factory('kudoEntriesFactory', ['$http', 'usersFactory', function ($http, usersFactory) {
+    .factory('kudoEntriesFactory', ['$http', '$location', 'usersFactory', function ($http, $location, usersFactory) {
 
-        let restBaseUrl = 'https://localhost:8443/Rutastic/rest/kudos'
+        let restBaseUrl = `https://${$location.host()}:${$location.port()}/Rutastic/rest/kudos`
 
         // FACTORY INTERFACE
 

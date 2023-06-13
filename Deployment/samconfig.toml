@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "Rutastic-Monolito"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-d9t24k9eyhtf"
+s3_prefix = "Rutastic-Monolito"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "SSHSourceCIDR=\"81.43.214.123/32\" VMInstanceType=\"t2.micro\" DockerImage=\"jgarciapft/rutastic-monolito:final\""
+image_repositories = []
